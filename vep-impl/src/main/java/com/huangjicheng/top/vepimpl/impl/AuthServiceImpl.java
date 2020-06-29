@@ -78,7 +78,6 @@ public class AuthServiceImpl implements AuthService {
         List<Auth> authList = authMapper.getList(new Auth());
         //根节点
         List<Auth> rootMenu = new ArrayList<Auth>();
-
         for (Auth auth : authList) {
             if (auth.getPid() == 0) {
                 // 为根节点
