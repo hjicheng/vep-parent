@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huangjicheng.top.vepdao.mapper.RoleMapper">
+
+    <resultMap id="RoleResultMap" type="com.huangjicheng.top.vepdao.entity.Role">
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="role_desc" property="roleDesc" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="roleField">
+      id,role_name,ids,role_desc,create_time,update_time
+    </sql>
+
+    <select id="get" parameterType="Integer" resultMap="RoleResultMap">
+        select
+        <include refid="roleField"/>
+        from role where id = #{id}
+    </select>
+
+    <select id="getList" parameterType="com.huangjicheng.top.vepdao.entity.Role" resultMap="RoleResultMap">
+        select
+        <include refid="roleField"/>
+        from role
+        <trim prefix="WHERE">
+            <if test="roleName != null and roleName.length()>0"> role_name like '%${roleName}%'</if>
+        </trim>
+    </select>
+
+
+    <delete id="delete" parameterType="Integer">
+        delete from role where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.huangjicheng.top.vepdao.entity.Role">
+        update role
+        <set>
+            <if test="roleName!= null and roleName != '' ">
+                role_name = #{roleName},
+            </if>
+            <if test="ids!= null">
+                ids = #{ids},
+            </if>
+            <if test="roleDesc != null ">
+                role_desc = #{roleDesc},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="save" parameterType="com.huangjicheng.top.vepdao.entity.Role">
+        insert into role (role_name,ids,role_desc,create_time)
+        values (#{roleName},#{ids},#{roleDesc},#{createTime})
+    </insert>
+</mapper>

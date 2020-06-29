@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huangjicheng.top.vepdao.mapper.BlogMapper">
+
+    <resultMap id="BlogResultMap" type="com.huangjicheng.top.vepdao.entity.Blog">
+        <result column="blog_title" jdbcType="VARCHAR" property="blogTitle"/>
+        <result column="blog_category_id" jdbcType="VARCHAR" property="blogCategoryId"/>
+        <result column="blog_tag_id" jdbcType="VARCHAR" property="blogTagId"/>
+        <result column="is_deleted" jdbcType="TINYINT" property="isDeleted"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="blog_content" jdbcType="LONGVARCHAR" property="blogContent"/>
+    </resultMap>
+
+    <sql id="fileField">
+        id, blog_title, blog_category_id,blog_content,
+        blog_tag_id, is_deleted, create_time, update_time
+    </sql>
+
+    <select id="get" parameterType="Integer" resultMap="BlogResultMap">
+        select
+        <include refid="fileField"/>
+        from blog where id = #{id}
+    </select>
+
+    <select id="getList" parameterType="com.huangjicheng.top.vepdao.entity.Blog" resultMap="BlogResultMap">
+        select
+        <include refid="fileField"/>
+        from blog
+        <trim prefix="where" prefixOverrides="and">
+            <if test="blogTitle != null and blogTitle.length() > 0">and blog_title like '%${blogTitle}%'</if>
+            <if test="blogCategoryId != null and blogCategoryId.length() > 0">and blog_category_id  = #{blogCategoryId}</if>
+            <if test="blogTagId != null and blogTagId.length() > 0">and blog_tag_id like '%${blogTagId}%'</if>
+
+        </trim>
+    </select>
+
+    <insert id="save" parameterType="com.huangjicheng.top.vepdao.entity.Blog">
+        insert into blog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="blogTitle != null">
+                blog_title,
+            </if>
+            <if test="blogCategoryId != null">
+                blog_category_id,
+            </if>
+            <if test="blogTagId != null">
+                blog_tag_id,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="blogContent != null">
+                blog_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="blogTitle != null">
+                #{blogTitle},
+            </if>
+            <if test="blogCategoryId != null">
+                #{blogCategoryId},
+            </if>
+            <if test="blogTagId != null">
+                #{blogTagId},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="blogContent != null">
+                #{blogContent},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="getTotalByMonth" parameterType="String" resultType="Integer">
+        select count(1) from blog where
+        date_format(create_time,'%Y-%m') = #{month}
+
+    </select>
+
+    <delete id="delete" parameterType="Integer">
+        delete from blog where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.huangjicheng.top.vepdao.entity.Blog">
+        update blog
+        <set>
+            <if test="blogTitle != null">
+                blog_title = #{blogTitle},
+            </if>
+            <if test="blogContent != null">
+                blog_content = #{blogContent},
+            </if>
+            <if test="blogCategoryId != null">
+                blog_category_id = #{blogCategoryId},
+            </if>
+            <if test="blogTagId != null">
+                blog_tag_id = #{blogTagId},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="blogContent != null">
+                blog_content = #{blogContent},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
