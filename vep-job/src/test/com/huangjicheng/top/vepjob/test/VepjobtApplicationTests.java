@@ -23,6 +23,9 @@ public class VepjobtApplicationTests {
 
     @Test
     public void test() {
+//        ReadFile readFile = new ReadFile();
+//        readFile.execute(filesService,restHighLevelClient);
+
         ReadFile readFile = new ReadFile();
         readFile.execute(null);
     }

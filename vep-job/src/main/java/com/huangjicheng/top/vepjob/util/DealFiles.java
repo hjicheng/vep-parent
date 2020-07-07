@@ -6,6 +6,7 @@ import com.huangjicheng.top.vepcommont.util.CsvUtil;
 import com.huangjicheng.top.vepcommont.util.StringUtils;
 import com.huangjicheng.top.vepdao.entity.Files;
 import com.huangjicheng.top.vepjob.entity.Books;
+import com.huangjicheng.top.vepjob.entity.ElasticSearchEntity;
 import com.huangjicheng.top.vepjob.jobhandler.ReadFile;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -18,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -48,14 +50,14 @@ public class DealFiles {
 
         String filePlat = files.getFileName().split("\\.")[0].split("_")[1];
 
-        String type = "";
+        String esType = "";
         if ("书籍".equals(files.getFileType())) {
-            type = "file_book_" + filePlat;
-            bulkRequest = dealBooksFile(list, type);
+            esType = "file_book_" + filePlat;
+            bulkRequest = dealBooksFile(list, esType,files.getFileType()+"_"+filePlat);
         } else if ("工作".equals(files.getFileType())) {
-            type = "file_job_" + filePlat;
+            esType = "file_job_" + filePlat;
         } else if ("商品".equals(files.getFileType())) {
-            type = "file_goods_" + filePlat;
+            esType = "file_goods_" + filePlat;
         }
 
         BulkResponse bulk = null;
@@ -76,7 +78,7 @@ public class DealFiles {
 
     }
 
-    public static BulkRequest dealBooksFile(List<String[]> list, String type) {
+    public static BulkRequest dealBooksFile(List<String[]> list, String esType,String type) {
         BulkRequest bulkRequest = new BulkRequest();
         for (int i = 0; i < list.size(); i++) {
             Books books = new Books();
@@ -99,7 +101,12 @@ public class DealFiles {
                     StringUtils.isNotBlank(books.getBookAuthor()) &&
                     StringUtils.isNotBlank(books.getBookStore()) &&
                     StringUtils.isNotBlank(books.getBookPrice())) {
-                bulkRequest.add(new IndexRequest(type).source(JSON.toJSONString(books), XContentType.JSON));
+                ElasticSearchEntity elasticSearchEntity = new ElasticSearchEntity();
+                elasticSearchEntity.setType(type);
+                elasticSearchEntity.setName(books.getBookName());
+                elasticSearchEntity.setValue(books.toString());
+                elasticSearchEntity.setCreateTime(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+                bulkRequest.add(new IndexRequest(esType).source(JSON.toJSONString(elasticSearchEntity), XContentType.JSON));
             }
         }
         return bulkRequest;

@@ -1,6 +1,7 @@
 package com.huangjicheng.top.vepjob.entity;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
  */
 
 @Data
+@ToString
 public class Books implements Serializable {
     private String bCate;
     private String href;
@@ -22,5 +24,4 @@ public class Books implements Serializable {
     private String bookDate;
     private String bookPrice;
     private Date createTime;
-
 }

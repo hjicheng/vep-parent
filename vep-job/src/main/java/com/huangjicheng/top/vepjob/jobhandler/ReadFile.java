@@ -53,4 +53,26 @@ public class ReadFile {
 
     }
 
+//    public ReturnT<String> execute(FilesService filesService,RestHighLevelClient restHighLevelClient) {
+//        try {
+//            if (atomicBoolean.compareAndSet(false, true)) {
+//                Files files = new Files();
+//                files.setState(0);
+//                List<Files> filesList = filesService.getList(files);
+//
+//                for (Files file : filesList) {
+//                    DealFiles.dealFile(file, filesService, restHighLevelClient);
+//                }
+//            } else {
+//                logger.info("readFile任务正在执行中......");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            logger.info("readFile更新锁");
+//            atomicBoolean.set(false);
+//        }
+//        return ReturnT.SUCCESS;
+//
+//    }
 }
