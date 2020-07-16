@@ -8,7 +8,6 @@ dubbo:
     protocol: 20880
   protocol:
     name: dubbo
-
 spring:
   datasource:
     url: jdbc:mysql://192.168.1.14:3306/xxl_job?Unicode=true&characterEncoding=UTF-8
@@ -20,6 +19,14 @@ spring:
     port: 25
     username: 17335656950@163.com
     password: hjc1314
+  application:
+    name: springboot_rabbitmq
+  rabbitmq:
+    host: 192.168.1.13
+    port: 5672
+    username: ems
+    password: ems
+    virtual-host: /ems
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
 
@@ -45,3 +52,5 @@ xxl:
       address:
     ### xxl-job, access token
     accessToken:
+
+
