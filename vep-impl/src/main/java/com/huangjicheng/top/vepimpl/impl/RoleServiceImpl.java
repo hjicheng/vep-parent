@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.huangjicheng.top.vepapi.service.RoleService;
 import com.huangjicheng.top.vepdao.entity.Auth;
 import com.huangjicheng.top.vepdao.entity.Role;
-import com.huangjicheng.top.vepdao.entity.User;
 import com.huangjicheng.top.vepdao.mapper.AuthMapper;
 import com.huangjicheng.top.vepdao.mapper.RoleMapper;
 import org.apache.dubbo.config.annotation.Service;
@@ -39,14 +38,22 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public PageInfo<Role> findAllRoleByPage(Role role, int pageNum, int pageSize) {
+    public PageInfo<Role> findAllRoleByPage( int pageNum, int pageSize) {
         // TODO Auto-generated method stub
         PageHelper.startPage(pageNum, pageSize);
-        List<Role> lists = roleMapper.getList(role);
+        List<Role> lists = roleMapper.getAllList();
         PageInfo<Role> pageInfo = new PageInfo<Role>(formatRole(lists));
         return pageInfo;
 
     }
+
+    @Override
+    public PageInfo<Role> findRoleByPage(Role role, int pageNum, int pageSize) {
+        // TODO Auto-generated method stub
+        PageHelper.startPage(pageNum, pageSize);
+        List<Role> lists = roleMapper.getList(role);
+        PageInfo<Role> pageInfo = new PageInfo<Role>(formatRole(lists));
+        return pageInfo;    }
 
     public List<Role> formatRole(List<Role> lists){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

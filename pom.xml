@@ -72,5 +72,20 @@
         <module>vep-job</module>
     </modules>
 
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <name>nexus</name>
+            <url>http://192.168.1.16:8081/repository/maven-public/</url>
+            <!-- Release版本则代表稳定的版本 -->
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <!-- Snapshot版本代表不稳定、尚处于开发中的版本，默认关闭，需要手动启动 -->
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>

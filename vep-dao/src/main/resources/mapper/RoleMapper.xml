@@ -30,6 +30,12 @@
     </select>
 
 
+    <select id="getAllList" resultMap="RoleResultMap">
+        select
+        <include refid="roleField"/>
+        from role
+    </select>
+
     <delete id="delete" parameterType="Integer">
         delete from role where id = #{id}
     </delete>

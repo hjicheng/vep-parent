@@ -23,6 +23,8 @@ public interface RoleService {
 
     List<Role> getList(Role role);
 
-    PageInfo<Role> findAllRoleByPage(Role role, int pageNum, int pageSize);
+    PageInfo<Role> findAllRoleByPage(int pageNum, int pageSize);
+
+    PageInfo<Role> findRoleByPage(Role role, int pageNum, int pageSize);
 
 }

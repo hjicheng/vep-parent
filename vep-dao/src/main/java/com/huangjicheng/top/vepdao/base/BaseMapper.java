@@ -39,6 +39,12 @@ public interface BaseMapper<T> {
     List<T> getList(T t);
 
     /**
+     * 查询全部数据
+     * @return
+     */
+    List<T> getAllList();
+
+    /**
      * 更新数据
      * @param bean
      * @return

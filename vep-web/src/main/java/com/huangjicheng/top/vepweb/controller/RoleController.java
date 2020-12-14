@@ -8,16 +8,16 @@ import com.huangjicheng.top.vepcommont.util.ResponseCode;
 import com.huangjicheng.top.vepcommont.util.ResultJson;
 import com.huangjicheng.top.vepdao.entity.Auth;
 import com.huangjicheng.top.vepdao.entity.Role;
-import com.huangjicheng.top.vepdao.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.models.auth.In;
 import org.apache.dubbo.config.annotation.Reference;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @Author: huangjicheng
@@ -26,7 +26,6 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/role")
-
 @Api(description = "角色管理")
 public class RoleController {
 
@@ -57,9 +56,9 @@ public class RoleController {
      * @return
      */
     @ApiOperation(value = "获取全部角色", notes = "获取全部角色")
-    @RequestMapping(value = "/getList/{pageNum}/{pageSize}", method = RequestMethod.POST)
-    public ResultJson getList(@RequestBody Role role, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
-        PageInfo<Role> roles = roleService.findAllRoleByPage(role, pageNum, pageSize);
+    @RequestMapping(value = "/getAllList/{pageNum}/{pageSize}", method = RequestMethod.GET)
+    public ResultJson getList( @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+        PageInfo<Role> roles = roleService.findAllRoleByPage( pageNum, pageSize);
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("roles", roles.getList());
@@ -67,7 +66,17 @@ public class RoleController {
 
         return new ResultJson(jsonObject);
     }
+    @ApiOperation(value = "角色查询", notes = "角色查询")
+    @RequestMapping(value = "/getList/{pageNum}/{pageSize}", method = RequestMethod.POST)
+    public ResultJson getList(@RequestBody Role role, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+        PageInfo<Role> roles = roleService.findRoleByPage(role, pageNum, pageSize);
 
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("roles", roles.getList());
+        jsonObject.put("total", roles.getTotal());
+
+        return new ResultJson(jsonObject);
+    }
     /**
      * 新建角色
      *
